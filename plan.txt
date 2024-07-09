@@ -1,0 +1,5 @@
+1. each minute, look at MACD 5 minutes
+2. if no position, then
+    1. if MACD cross, enter new position
+    2. set TSL at 2x spread
+3. if position open, do nothing
