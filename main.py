@@ -38,3 +38,7 @@ fig=go.Figure(data=go.Ohlc(x=df['Date'],
                 close=df['c']))
 fig.update(layout_xaxis_rangeslider_visible=False)
 fig.show()
+
+# abstract the chart by scaling everything to 1.00 = first price, then take 
+# off the date axis
+
