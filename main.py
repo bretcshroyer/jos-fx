@@ -15,6 +15,9 @@ client = oandapyV20.API(access_token=access_token)
 
 
 parms={"granularity":"M5"}
+#other parms:
+#   from, to  2023-01-01T15%3A00%3A00.000000000Z
+#default = 500 candles, maximum = 5000
 r=instruments.InstrumentsCandles(instrument="EUR_USD",params=parms)
 client.request(r)
 
@@ -29,7 +32,6 @@ for candle in r.response['candles']:
         c=candle['mid']['c']
         cd[time]=[time,volume,o,h,l,c]
 df=pd.DataFrame.from_dict(cd,orient='index',columns=['Date','volume','o','h','l','c'])        
-print(df)
 
 fig=go.Figure(data=go.Ohlc(x=df['Date'],
                 open=df['o'],
