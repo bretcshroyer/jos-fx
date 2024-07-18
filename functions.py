@@ -29,9 +29,13 @@ def candle_data(client,instrument="EUR_USD",granularity="M5",parms={}):
             h=candle['mid']['h']
             l=candle['mid']['l']
             c=candle['mid']['c']
-            cd[time]=[time,volume,o,h,l,c]
-    df=pd.DataFrame.from_dict(cd,orient='index',columns=['Date','volume','o','h','l','c'])        
+            cd[time]=[time,instrument,granularity,volume,o,h,l,c]
+            print(time)
+            print(type(time))
+    df=pd.DataFrame.from_dict(cd,orient='index',columns=['time','instrument','granularity','volume','o','h','l','c']).reset_index()
+    df=df.drop(columns=['index'])        
     return df
 
-d=candle_data(client)
+parms={"count":"4"}
+d=candle_data(client,parms=parms)
 print(d)
