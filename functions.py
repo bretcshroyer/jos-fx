@@ -1,23 +1,17 @@
 import pandas as pd
 import oandapyV20
-import oandapyV20.endpoints.accounts as accounts
 import oandapyV20.endpoints.instruments as instruments
-import configparser
 
-config = configparser.ConfigParser()
-config.read('../config/config_v20.ini')
-accountID = config['oanda']['account_id']
-access_token = config['oanda']['api_key']
 
-client = oandapyV20.API(access_token=access_token)
+def candle_data(client,instrument="EUR_USD",parms={}):
+    #default instrument, all else passed in via parms dict
 
-def candle_data(client,instrument="EUR_USD",granularity="M5",parms={}):
-    parms['granularity']=granularity
-    print(parms)
     #other parms:
-    #   from, to  2023-01-01T15%3A00%3A00.000000000Z
-    #   count  default = 500 candles, maximum = 5000
+    #   granularity  e.g. "M5"
+    #   from, to     e.g. 2023-01-01T15%3A00%3A00.000000000Z
+    #   count        default = 500 candles, maximum = 5000
     r=instruments.InstrumentsCandles(instrument,params=parms)
+    granularity=parms['granularity']
     client.request(r)
 
     cd={}
@@ -30,12 +24,25 @@ def candle_data(client,instrument="EUR_USD",granularity="M5",parms={}):
             l=candle['mid']['l']
             c=candle['mid']['c']
             cd[time]=[time,instrument,granularity,volume,o,h,l,c]
-            print(time)
-            print(type(time))
+
     df=pd.DataFrame.from_dict(cd,orient='index',columns=['time','instrument','granularity','volume','o','h','l','c']).reset_index()
     df=df.drop(columns=['index'])        
     return df
 
-parms={"count":"4"}
-d=candle_data(client,parms=parms)
-print(d)
+if __name__=="__main__":
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('../config/config_v20.ini')
+    accountID = config['oanda']['account_id']
+    access_token = config['oanda']['api_key']
+
+    client = oandapyV20.API(access_token=access_token)
+    parms={"count":"10","granularity":"M1"}
+    df=candle_data(client=client,parms=parms)
+    print(df)
+
+    f=df['time'][0]
+
+    parms['to']=f
+    df=candle_data(client=client,parms=parms)
+    print(df)
