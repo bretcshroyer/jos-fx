@@ -29,20 +29,54 @@ def candle_data(client,instrument="EUR_USD",parms={}):
     df=df.drop(columns=['index'])        
     return df
 
+def big_candle_data(client,size,instrument="EUR_USD",parms={}):
+    #a high-level wrapper to successively call to API in bite-sized chunks to build the full dataset
+    
+    chunksize=250  #by default, OANDA has chunksize (count) max at 500
+
+    #1. pull the most recent chunk with count == chunksize
+    parms["count"]=chunksize
+    df=candle_data(client=client,parms=parms)
+    result=df.copy()   
+    print(len(result))
+    #2. if we don't have enough then repeat with another chunk
+    
+    while (len(result)<size):  
+        f=df['time'][0]
+        parms['to']=f
+        df=candle_data(client=client,parms=parms)
+        result=pd.concat([result,df],ignore_index=True)
+        print(len(result))
+    #3. limit final set to desired count size
+    #sort
+    result=result.sort_values(by=["time"])
+    return(result.tail(size))
+
+
 if __name__=="__main__":
     import configparser
     config = configparser.ConfigParser()
     config.read('../config/config_v20.ini')
     accountID = config['oanda']['account_id']
     access_token = config['oanda']['api_key']
-
     client = oandapyV20.API(access_token=access_token)
-    parms={"count":"10","granularity":"M1"}
-    df=candle_data(client=client,parms=parms)
-    print(df)
 
-    f=df['time'][0]
+    #vignette="test two pulls"
+    vignette="test large pull"
 
-    parms['to']=f
-    df=candle_data(client=client,parms=parms)
-    print(df)
+    match vignette:
+        case "test two pulls":
+            parms={"count":"10","granularity":"M1"}
+            df=candle_data(client=client,parms=parms)
+            print(df)
+
+            f=df['time'][0]
+
+            parms['to']=f
+            df=candle_data(client=client,parms=parms)
+            print(df)
+        case "test large pull":
+            parms={"granularity":"M1"}
+            df=big_candle_data(client=client,size=2000,parms=parms)
+            print(df)
+            print(len(df))
