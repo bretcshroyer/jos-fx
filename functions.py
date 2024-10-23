@@ -36,7 +36,7 @@ def big_candle_data(client,size,instrument="EUR_USD",parms={}):
 
     #1. pull the most recent chunk with count == chunksize
     parms["count"]=chunksize
-    df=candle_data(client=client,parms=parms)
+    df=candle_data(client=client,instrument=instrument,parms=parms)
     result=df.copy()   
     print(len(result))
     #2. if we don't have enough then repeat with another chunk
@@ -51,7 +51,6 @@ def big_candle_data(client,size,instrument="EUR_USD",parms={}):
     #sort
     result=result.sort_values(by=["time"])
     return(result.tail(size))
-
 
 if __name__=="__main__":
     import configparser

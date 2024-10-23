@@ -25,6 +25,3 @@ df=candle_data(client,parms=parms)
 # abstract the chart by scaling everything to 1.00 = first price, then take 
 # off the date axis
 
-"""
-Is this a comment?
-"""
