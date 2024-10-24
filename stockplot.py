@@ -7,4 +7,22 @@ def simple_plot(df):
                     low=df['l'],
                     close=df['c']))
     fig.update(layout_xaxis_rangeslider_visible=False)
+    fig.update_layout(
+        xaxis=dict(
+            showticklabels=False,
+            showgrid=False,
+            zeroline=False,
+            showline=False
+        ),
+        yaxis=dict(
+            showticklabels=False,
+            showgrid=False,
+            zeroline=False,
+            showline=False
+        ),
+        showlegend=False,
+        hovermode=False,
+        xaxis_rangeslider_visible=False
+    )
+
     fig.show()

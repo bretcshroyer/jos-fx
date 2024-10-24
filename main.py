@@ -19,7 +19,7 @@ parms={"granularity":"M5", "count":"20"}
 df=candle_data(client,parms=parms)
 
 #generate a simple plot    
-# simple_plot(df)
+simple_plot(df)
 
 
 # abstract the chart by scaling everything to 1.00 = first price, then take 
