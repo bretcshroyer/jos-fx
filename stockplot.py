@@ -26,3 +26,4 @@ def simple_plot(df):
     )
 
     fig.show()
+    fig.write_image("test.png")
