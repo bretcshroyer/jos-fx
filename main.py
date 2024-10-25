@@ -4,6 +4,7 @@ import oandapyV20
 import oandapyV20.endpoints.accounts as accounts
 import oandapyV20.endpoints.instruments as instruments
 import configparser
+from database import create_database
 
 from functions import candle_data
 from stockplot import simple_plot
@@ -18,8 +19,12 @@ parms={"granularity":"M5", "count":"40"}
 
 df=candle_data(client,parms=parms)
 
+create_database(df)
+
 #generate a simple plot    
-simple_plot(df)
+#fig=simple_plot(df)
+#fig.show()
+#fig.write_image("test.png")
 
 
 # abstract the chart by scaling everything to 1.00 = first price, then take 

@@ -24,6 +24,4 @@ def simple_plot(df):
         hovermode=False,
         xaxis_rangeslider_visible=False
     )
-
-    fig.show()
-    fig.write_image("test.png")
+    return(fig)
