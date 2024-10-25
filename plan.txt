@@ -3,3 +3,23 @@
     1. if MACD cross, enter new position
     2. set TSL at 2x spread
 3. if position open, do nothing
+
+build a folder structure of png files
+dimensions of the past:
+1. granularity
+2. size of window
+
+Future outcomes:
+1. up
+2. sideways
+3. whipsaw
+4. down
+
+Classify images on various timeframes each minute
+
+Then enter a position if signal says up in near term, and mid, and long.
+stay in position if not reached goal and not in down indication
+Target +0.25% for each trade
+exit  trade if it's stale and target not reached and prognosis is now down or whipsaw
+
+repeat during the day unless daily result is -0.5%

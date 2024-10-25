@@ -14,7 +14,7 @@ accountID = config['oanda']['account_id']
 access_token = config['oanda']['api_key']
 client = oandapyV20.API(access_token=access_token)
 
-parms={"granularity":"M5", "count":"20"}
+parms={"granularity":"M5", "count":"40"}
 
 df=candle_data(client,parms=parms)
 
