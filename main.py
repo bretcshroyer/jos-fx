@@ -4,7 +4,6 @@ import oandapyV20
 import oandapyV20.endpoints.accounts as accounts
 import oandapyV20.endpoints.instruments as instruments
 import configparser
-from database import create_database
 
 from functions import candle_data
 from stockplot import simple_plot
@@ -19,7 +18,9 @@ parms={"granularity":"M5", "count":"40"}
 
 df=candle_data(client,parms=parms)
 
-create_database(df)
+# Run just one time
+#from database_functions import create_database
+#create_database(df)
 
 #generate a simple plot    
 #fig=simple_plot(df)

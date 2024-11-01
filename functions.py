@@ -1,11 +1,11 @@
 import pandas as pd
 import oandapyV20
 import oandapyV20.endpoints.instruments as instruments
+from database_functions import save_data
 
 
 def candle_data(client,instrument="EUR_USD",parms={}):
     #default instrument, all else passed in via parms dict
-
     #other parms:
     #   granularity  e.g. "M5"
     #   from, to     e.g. 2023-01-01T15%3A00%3A00.000000000Z
@@ -26,7 +26,8 @@ def candle_data(client,instrument="EUR_USD",parms={}):
             cd[time]=[time,instrument,granularity,volume,o,h,l,c]
 
     df=pd.DataFrame.from_dict(cd,orient='index',columns=['time','instrument','granularity','volume','o','h','l','c']).reset_index()
-    df=df.drop(columns=['index'])        
+    df=df.drop(columns=['index'])  
+    save_data(df)      
     return df
 
 def big_candle_data(client,size,instrument="EUR_USD",parms={}):
@@ -76,6 +77,6 @@ if __name__=="__main__":
             print(df)
         case "test large pull":
             parms={"granularity":"M1"}
-            df=big_candle_data(client=client,size=2000,parms=parms)
+            df=big_candle_data(client=client,size=100,parms=parms)
             print(df)
             print(len(df))
