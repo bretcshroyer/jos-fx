@@ -32,7 +32,18 @@ def create_database(df):
 
 def save_data(df):
     # Create a connection to a new SQLite database
-    engine = create_engine('sqlite:///tickdata.db')
-    df.to_sql('price_data', engine, if_exists='append', index=False, 
-          method='multi', chunksize=1000)
+    #engine = create_engine('sqlite:///tickdata.db')
+    #df.to_sql('#price_data_temp_table', con=engine, index=False, if_exists='replace')
 
+    conn = sqlite3.connect('tickdata.db')
+    cursor = conn.cursor()
+    df.to_sql('temp_table', con=conn, index=False, if_exists='replace')
+      
+    cursor.execute('''
+    INSERT OR IGNORE INTO price_data (time, instrument, granularity, volume, o, h, l, c)
+    SELECT time, instrument, granularity, volume, o, h, l, c
+    FROM temp_table
+    ''')
+
+    conn.commit()
+    conn.close()

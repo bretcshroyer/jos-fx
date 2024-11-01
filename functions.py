@@ -28,7 +28,7 @@ def candle_data(client,instrument="EUR_USD",parms={}):
     df=pd.DataFrame.from_dict(cd,orient='index',columns=['time','instrument','granularity','volume','o','h','l','c']).reset_index()
     df=df.drop(columns=['index'])  
     save_data(df)      
-    return df
+    return(df)
 
 def big_candle_data(client,size,instrument="EUR_USD",parms={}):
     #a high-level wrapper to successively call to API in bite-sized chunks to build the full dataset
@@ -77,6 +77,6 @@ if __name__=="__main__":
             print(df)
         case "test large pull":
             parms={"granularity":"M1"}
-            df=big_candle_data(client=client,size=100,parms=parms)
+            df=big_candle_data(client=client,size=10000,parms=parms)
             print(df)
             print(len(df))
